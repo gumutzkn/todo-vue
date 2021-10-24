@@ -5,7 +5,7 @@
       !todo.isFinished ? $style.not_finished : null,
     ]"
   >
-    <div :class="$style.checked" @click="toggleFinished">
+    <div :class="$style.checked" @click="$emit('toggle-finished', todo.id)">
       <div :class="$style.circle">
         <img src="../assets/icon-check.svg" alt="check" />
       </div>
@@ -14,13 +14,13 @@
       <span :class="$style.todo_task__text">{{ todo.task }}</span>
     </div>
 
-    <div @click="$emit('remove')" :class="$style.cross" />
+    <div :class="$style.cross" @click="$emit('delete-todo', todo.id)" />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Todo',
+  name: "Todo",
   props: {
     todos: Array,
     todo: Object,
@@ -36,15 +36,16 @@ export default {
 <style module lang="scss">
 .todo_container {
   width: 100%;
-  height: 7vh;
+  height: 9vh;
   display: flex;
+  padding: 2rem 0;
   cursor: pointer;
   border-bottom: 1px solid #393a4b;
 
   .cross {
     height: 100%;
     width: 7rem;
-    background-image: url('../assets/icon-cross.svg');
+    background-image: url("../assets/icon-cross.svg");
     background-position: center;
     background-repeat: no-repeat;
     display: none;
@@ -74,11 +75,10 @@ export default {
     align-items: center;
     border-radius: 50%;
     background: linear-gradient(135deg, #55ddff 0%, #c058f3 100%);
-    //background-color: transparent;
 
     &:hover {
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: 0;

@@ -2,34 +2,30 @@
   <div :class="$style.container">
     <Todo
       :todos="todos"
-      v-for="(todo, index) in todos"
+      v-for="todo in todos"
       :key="todo.id"
-      @remove="removeTask(index)"
       :todo="todo"
+      @delete-todo="$emit('delete-todo', todo.id)"
+      @toggle-finished="$emit('toggle-finished', todo.id)"
     />
   </div>
 </template>
 
 <script>
-import Todo from './Todo';
+import Todo from "./Todo";
 export default {
-  name: 'TodoList',
+  name: "TodoList",
   components: { Todo },
   props: {
     todos: Array,
   },
-  methods: {
-    removeTask(index) {
-      this.todos.splice(index, 1);
-    },
-  },
+  emits: ["delete-todo", "toggle-finished"],
 };
 </script>
 
 <style module lang="scss">
 .container {
   width: 100%;
-  height: 50vh;
   background-color: #25273d;
   margin-top: 4rem;
   box-shadow: 0px 35px 50px -15px rgba(0, 0, 0, 0.5);

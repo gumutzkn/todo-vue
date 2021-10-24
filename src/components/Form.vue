@@ -4,31 +4,56 @@
       <input v-model="task" type="text" placeholder="Create a new todo..." />
     </div>
   </form>
-  <TodoList :todos="todos" />
+  <TodoList
+    @delete-todo="deleteTodo"
+    @toggle-finished="toggleFinished"
+    :todos="todos"
+  />
+  <TodoFilter :todos="todos" />
 </template>
 
 <script>
-import TodoList from './TodoList';
+import TodoList from "./TodoList";
+import TodoFilter from "./TodoFilter.vue";
+
 export default {
-  name: 'Form',
-  components: { TodoList },
+  name: "Form",
+  components: {
+    TodoList,
+    TodoFilter,
+  },
   data() {
     return {
-      task: '',
+      task: "",
       todos: [],
       id: 1,
     };
   },
   methods: {
     addTodo() {
-      if (this.task.length === 0) return;
-      this.todos.push({
-        id: this.id++,
-        task: this.task,
-        isFinished: false,
-      });
+      if (!this.task) {
+        alert("Please type a todo");
+        return;
+      }
 
-      this.task = '';
+      this.todos = [
+        ...this.todos,
+        {
+          id: Math.floor(Math.random() * 100000),
+          isFinished: false,
+          task: this.task,
+        },
+      ];
+
+      this.task = "";
+    },
+    toggleFinished(id) {
+      this.todos.map((todo) =>
+        todo.id === id ? (todo.isFinished = !todo.isFinished) : todo
+      );
+    },
+    deleteTodo(id) {
+      this.todos = this.todos.filter((todo) => todo.id !== id);
     },
   },
 };
